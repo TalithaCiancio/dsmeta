@@ -22,9 +22,7 @@ function SalesCard() {
 
     const dmin = minDate.toISOString().slice(0, 10);
     const dmax = maxDate.toISOString().slice(0, 10);
-     console.log(dmin);
-
-
+     
     axios.get(`${BASE_URL}/sales?minDate=${dmin}&maxDate=${dmax}`)
            .then(response =>{
             setSales(response.data.content);
@@ -59,8 +57,8 @@ function SalesCard() {
                             <th className="Show992">ID</th>
                             <th className="Show576">Data</th>
                             <th>Vendedor</th>
-                            <th className="Show992">Visitas</th>
-                            <th className="Show992">Vendas</th>
+                            <th className = "Show992">Visitas</th>
+                            <th className = "Show992">Vendas</th>
                             <th>Total</th>
                             <th>Notificar</th>
                         </tr>
@@ -69,15 +67,15 @@ function SalesCard() {
                         {sales.map(sale =>{
                             return (
                                 <tr key={sale.id}>
-                            <td className="Show992">{sale.id}</td>
-                            <td className="Show576">{new Date(sale.date).toLocaleDateString()}</td>
+                            <td className = "Show992">{sale.id}</td>
+                            <td className ="Show576">{new Date(sale.date).toLocaleDateString()}</td>
                             <td>{sale.sellerName}</td>
-                            <td className="Show992">{sale.visited}</td>
-                            <td className="Show992">{sale.deals}</td>
+                            <td className = "Show992">{sale.visited}</td>
+                            <td className = "Show992">{sale.deals}</td>
                             <td>R$ {sale.amount.toFixed(2)}</td>
                             <td>
                                 <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
+                                    <NotificationButton saleId={sale.id} />
                                 </div>
 
                             </td>
