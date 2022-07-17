@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { sale } from "../../models/sale";
+import { BASE_URL } from "../../utils/request";
 import NotificationButton from '../NotificationButton';
 import './styles.css';
 
@@ -13,12 +15,15 @@ function SalesCard() {
     const [minDate, setMinDate] = useState(min);
     const [maxDate, setMaxDate] = useState(max);
 
+    const[sales, setSales]= useState<sale[]>([]);
+
+
    useEffect (() =>{
-    axios.get("http://localhost:8080/sales")
-        .then(response =>{
-            console.log(response.data);
-        });
-   },[]);
+    axios.get(`${BASE_URL}/sales`)
+           .then(response =>{
+            setSales(response.data.content);
+              });
+   },     []);
 
     return (
         <div className="dsmeta-card">
@@ -55,13 +60,15 @@ function SalesCard() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="Show992">#341</td>
-                            <td className="Show576">08/07/2022</td>
-                            <td>Anakin</td>
-                            <td className="Show992">15</td>
-                            <td className="Show992">11</td>
-                            <td>R$ 55300.00</td>
+                        {sales.map(sale =>{
+                            return (
+                                <tr key={sale.id}>
+                            <td className="Show992">{sale.id}</td>
+                            <td className="Show576">{new Date(sale.date).toLocaleDateString()}</td>
+                            <td>{sale.sellerName}</td>
+                            <td className="Show992">{sale.visited}</td>
+                            <td className="Show992">{sale.deals}</td>
+                            <td>R$ {sale.amount.toFixed(2)}</td>
                             <td>
                                 <div className="dsmeta-red-btn-container">
                                     <NotificationButton />
@@ -69,34 +76,11 @@ function SalesCard() {
 
                             </td>
                         </tr>
-                        <tr>
-                            <td className="Show992">#341</td>
-                            <td className="Show576">08/07/2022</td>
-                            <td>Anakin</td>
-                            <td className="Show992">15</td>
-                            <td className="Show992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="Show992">#341</td>
-                            <td className="Show576">08/07/2022</td>
-                            <td>Anakin</td>
-                            <td className="Show992">15</td>
-                            <td className="Show992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
 
-                            </td>
-                        </tr>
+                         )
+                        }) }
+                        
                     </tbody>
 
                 </table>
